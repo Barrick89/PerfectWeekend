@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PerfectWeekend</string>
+    <string name="storage_button">Image from storage</string>
+    <string name="take_photo_button">Take a photo</string>
+    <string name="description_textview">Description (optional)</string>
+    <string name="name_textview">Location name</string>
+    <string name="pick_location_textview">Pick a location</string>
+    <string name="location_tag_textview">Location:</string>
+    <string name="save_button">Save</string>
 </resources>
