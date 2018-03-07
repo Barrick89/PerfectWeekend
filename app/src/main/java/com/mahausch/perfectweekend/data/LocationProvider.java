@@ -135,4 +135,69 @@ public class LocationProvider extends ContentProvider {
         return rowsDeleted;
     }
 
+    @Override
+    public int update(Uri uri, ContentValues contentValues, String selection,
+                      String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case LOCATION:
+                return updateLocation(uri, contentValues, selection, selectionArgs);
+            case LOCATION_ID:
+                selection = LocationEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return updateLocation(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updateLocation(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        if (values.containsKey(LocationEntry.COLUMN_LOCATION_NAME)) {
+            String name = values.getAsString(LocationEntry.COLUMN_LOCATION_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Location requires a name");
+            }
+        }
+
+        if (values.containsKey(LocationEntry.COLUMN_LOCATION_IMAGE)) {
+            String image = values.getAsString(LocationEntry.COLUMN_LOCATION_IMAGE);
+            if (image == null) {
+                throw new IllegalArgumentException("Location requires an image");
+            }
+        }
+
+        if (values.containsKey(LocationEntry.COLUMN_LOCATION_DESCRIPTION)) {
+            String description = values.getAsString(LocationEntry.COLUMN_LOCATION_DESCRIPTION);
+            if (description == null) {
+                description = "";
+            }
+        }
+
+        if (values.containsKey(LocationEntry.COLUMN_LOCATION_POSITION)) {
+            String position = values.getAsString(LocationEntry.COLUMN_LOCATION_POSITION);
+            if (position == null) {
+                throw new IllegalArgumentException("Location requires valid position");
+            }
+        }
+
+        SQLiteDatabase db = mLocationDbHelper.getWritableDatabase();
+
+        int rowsUpdated = db.update(LocationEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
+    }
+
+    @Override
+    public String getType(@NonNull Uri uri) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }
