@@ -108,4 +108,31 @@ public class LocationProvider extends ContentProvider {
         return ContentUris.withAppendedId(uri, id);
     }
 
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        SQLiteDatabase db = mLocationDbHelper.getWritableDatabase();
+
+        int rowsDeleted;
+
+        final int match = sUriMatcher.match(uri);
+        String table;
+
+        switch (match) {
+            case LOCATION_ID:
+                selection = LocationEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+            case LOCATION:
+                table = LocationEntry.TABLE_NAME;
+                break;
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+        rowsDeleted = db.delete(table, selection, selectionArgs);
+
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
+    }
+
 }
