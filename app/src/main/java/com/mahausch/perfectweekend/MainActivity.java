@@ -1,8 +1,12 @@
 package com.mahausch.perfectweekend;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +15,9 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+import static com.mahausch.perfectweekend.data.LocationContract.LocationEntry.CONTENT_URI;
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -19,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recycler;
 
-    public static final int LOCATION_LOADER = 0;
+    private LocationAdapter adapter;
+
+    public static final int LOCATION_LOADER_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,23 @@ public class MainActivity extends AppCompatActivity {
         adapter = new LocationAdapter(this, null);
         recycler.setAdapter(adapter);
 
-        getSupportLoaderManager().initLoader(GARDEN_LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(LOCATION_LOADER_ID, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, CONTENT_URI, null,
+                null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        data.moveToFirst();
+        adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
