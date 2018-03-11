@@ -14,7 +14,7 @@
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/overview_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height"
             android:scaleType="centerCrop" />
@@ -27,7 +27,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/title_text_view"
+                android:id="@+id/overview_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
