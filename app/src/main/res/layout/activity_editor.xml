@@ -12,6 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/take_photo_button"
+        android:onClick="takePhoto"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/storage_button"
         app:layout_constraintStart_toStartOf="parent"
