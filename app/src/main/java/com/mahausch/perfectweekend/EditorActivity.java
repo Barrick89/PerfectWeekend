@@ -49,13 +49,11 @@ public class EditorActivity extends AppCompatActivity {
         sUriMatcher.addURI(LocationContract.CONTENT_AUTHORITY, LocationContract.PATH_LOCATIONS + "/#", LOCATION_ID);
     }
 
-    @BindView(R.id.imageView)
+    @BindView(R.id.imageview)
     ImageView imageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
@@ -70,6 +68,7 @@ public class EditorActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        ButterKnife.bind(this);
     }
 
 
