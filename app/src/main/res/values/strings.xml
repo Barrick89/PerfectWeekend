@@ -7,4 +7,6 @@
     <string name="pick_location_textview">Pick a location</string>
     <string name="location_tag_textview">Location:</string>
     <string name="save_button">Save</string>
+    <string name="add_location_title">Add new location</string>
+    <string name="edit_location_title">Edit location</string>
 </resources>
