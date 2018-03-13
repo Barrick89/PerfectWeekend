@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                intent.setData(CONTENT_URI);
                 startActivity(intent);
             }
         });
