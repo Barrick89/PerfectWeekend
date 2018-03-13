@@ -56,7 +56,7 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         Intent intent = getIntent();
-        if (intent.getExtras() != null) {
+        if (intent.getData() != null) {
             currentUri = intent.getData();
         }
 
