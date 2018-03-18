@@ -153,7 +153,6 @@ public class EditorActivity extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         imageUri = Uri.parse(image.getAbsolutePath());
-        imageView.setImageURI(imageUri);
         return image;
     }
 
