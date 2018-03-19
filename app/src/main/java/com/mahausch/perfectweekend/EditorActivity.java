@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -53,6 +54,7 @@ public class EditorActivity extends AppCompatActivity implements
 
     private Uri currentUri;
     private Uri imageUri;
+    private String placeID;
 
     private static final int LOCATION = 100;
     private static final int LOCATION_ID = 101;
@@ -68,6 +70,9 @@ public class EditorActivity extends AppCompatActivity implements
 
     @BindView(R.id.imageview)
     ImageView imageView;
+
+    @BindView(R.id.location_tag_textview)
+    TextView textView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -161,7 +166,8 @@ public class EditorActivity extends AppCompatActivity implements
             }
 
             String placeName = place.getName().toString();
-            String placeID = place.getId();
+            placeID = place.getId();
+            textView.setText(placeName);
         }
     }
 
