@@ -156,4 +156,8 @@ public class EditorActivity extends AppCompatActivity {
         return image;
     }
 
+    public void pickLocation(View view) {
+        
+    }
+
 }
