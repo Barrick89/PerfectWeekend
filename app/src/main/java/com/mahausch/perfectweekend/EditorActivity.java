@@ -154,10 +154,10 @@ public class EditorActivity extends AppCompatActivity implements
             }
         } else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
 
-            if (resultData != null) {
-                imageView.setImageURI(imageUri);
+
+            imageView.setImageURI(imageUri);
                 imageView.invalidate();
-            }
+
         } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(this, resultData);
             if (place == null) {
