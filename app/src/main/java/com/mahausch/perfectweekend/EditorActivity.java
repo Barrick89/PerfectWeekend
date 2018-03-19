@@ -16,9 +16,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.mahausch.perfectweekend.data.LocationContract;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
 
@@ -32,9 +36,12 @@ import butterknife.ButterKnife;
 
 public class EditorActivity extends AppCompatActivity {
 
+    public static final String TAG = EditorActivity.class.getSimpleName();
     private static final int PICK_IMAGE_REQUEST = 0;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_TAKE_PHOTO = 2;
+    private static final int PLACE_PICKER_REQUEST = 3;
+    private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 4;
 
     private Uri currentUri;
     private Uri imageUri;
@@ -157,7 +164,23 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     public void pickLocation(View view) {
-        
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(EditorActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_FINE_LOCATION);
+        }
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Intent i = builder.build(this);
+            startActivityForResult(i, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+        } catch (GooglePlayServicesNotAvailableException e) {
+            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+        } catch (Exception e) {
+            Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+        }
     }
 
 }
