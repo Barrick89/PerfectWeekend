@@ -22,6 +22,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.mahausch.perfectweekend.data.LocationContract;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
@@ -120,6 +121,15 @@ public class EditorActivity extends AppCompatActivity {
                 imageView.setImageURI(imageUri);
                 imageView.invalidate();
             }
+        } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            Place place = PlacePicker.getPlace(this, resultData);
+            if (place == null) {
+                Log.i(TAG, "No place selected");
+                return;
+            }
+
+            String placeName = place.getName().toString();
+            String placeID = place.getId();
         }
     }
 
