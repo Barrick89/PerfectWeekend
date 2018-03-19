@@ -71,7 +71,7 @@ public class EditorActivity extends AppCompatActivity implements
     @BindView(R.id.imageview)
     ImageView imageView;
 
-    @BindView(R.id.location_tag_textview)
+    @BindView(R.id.location_textview)
     TextView textView;
 
     @Override
