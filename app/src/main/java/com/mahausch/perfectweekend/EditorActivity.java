@@ -80,12 +80,12 @@ public class EditorActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         if (intent.getData() != null) {
             currentUri = intent.getData();
-        }
 
-        if (currentUri.equals(LocationEntry.CONTENT_URI)) {
-            setTitle(getString(R.string.add_location_title));
-        } else {
-            setTitle(getString(R.string.edit_location_title));
+            if (currentUri.equals(LocationEntry.CONTENT_URI)) {
+                setTitle(getString(R.string.add_location_title));
+            } else {
+                setTitle(getString(R.string.edit_location_title));
+            }
         }
 
         super.onCreate(savedInstanceState);
