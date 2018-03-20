@@ -9,4 +9,5 @@
     <string name="save_button">Save</string>
     <string name="add_location_title">Add new location</string>
     <string name="edit_location_title">Edit location</string>
+    <string name="missing_input">Please add required input.</string>
 </resources>

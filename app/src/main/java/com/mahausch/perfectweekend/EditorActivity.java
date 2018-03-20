@@ -17,10 +17,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -70,6 +73,12 @@ public class EditorActivity extends AppCompatActivity implements
 
     @BindView(R.id.imageview)
     ImageView imageView;
+
+    @BindView(R.id.name_edittext)
+    EditText nameEditText;
+
+    @BindView(R.id.description_edittext)
+    EditText descriptionEditText;
 
     @BindView(R.id.location_textview)
     TextView textView;
@@ -232,7 +241,12 @@ public class EditorActivity extends AppCompatActivity implements
     }
 
     public void saveLocation(View view) {
-
+        if (imageUri == null ||
+                TextUtils.isEmpty(nameEditText.getText()) ||
+                placeID == null) {
+            Toast.makeText(this, getString(R.string.missing_input),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
