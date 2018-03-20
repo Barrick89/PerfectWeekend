@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/storage_button" />
 
     <EditText
-        android:id="@+id/name_textview"
+        android:id="@+id/name_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -74,14 +74,14 @@
         android:layout_marginLeft="16dp" />
 
     <EditText
-        android:id="@+id/description_textview"
+        android:id="@+id/description_edittext"
         android:layout_width="305dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:ems="10"
         android:inputType="textMultiLine"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_textview"
+        app:layout_constraintTop_toBottomOf="@+id/name_edittext"
         android:hint="@string/description_textview"
         android:layout_marginLeft="16dp" />
 
@@ -95,7 +95,7 @@
         android:background="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/description_edittext" />
 
     <Button
         android:id="@+id/location_button"
