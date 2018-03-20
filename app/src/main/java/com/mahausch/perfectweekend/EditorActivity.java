@@ -231,4 +231,8 @@ public class EditorActivity extends AppCompatActivity implements
         }
     }
 
+    public void saveLocation(View view) {
+
+    }
+
 }
