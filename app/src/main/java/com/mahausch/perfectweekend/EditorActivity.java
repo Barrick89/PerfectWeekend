@@ -3,6 +3,7 @@ package com.mahausch.perfectweekend;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.UriMatcher;
 import android.content.pm.PackageManager;
@@ -246,6 +247,46 @@ public class EditorActivity extends AppCompatActivity implements
                 placeID == null) {
             Toast.makeText(this, getString(R.string.missing_input),
                     Toast.LENGTH_SHORT).show();
+        } else {
+            ContentValues values = new ContentValues();
+            int match = sUriMatcher.match(currentUri);
+
+            switch (match) {
+                case LOCATION:
+                case LOCATION_ID:
+                    values.put(LocationEntry.COLUMN_LOCATION_IMAGE, imageUri.toString());
+                    values.put(LocationEntry.COLUMN_LOCATION_NAME, nameEditText.getText().toString().trim());
+                    values.put(LocationEntry.COLUMN_LOCATION_DESCRIPTION, descriptionEditText.getText().toString());
+                    values.put(LocationEntry.COLUMN_LOCATION_POSITION, placeID);
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown URI " + currentUri);
+            }
+
+            if (currentUri.equals(LocationEntry.CONTENT_URI)) {
+
+                Uri newUri = getContentResolver().insert(currentUri, values);
+
+                if (newUri == null) {
+                    Toast.makeText(this, getString(R.string.editor_insert_location_failed),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, getString(R.string.editor_insert_location_successful),
+                            Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                int rowsUpdated = getContentResolver().update(currentUri, values, null, null);
+
+                if (rowsUpdated == 0) {
+                    Toast.makeText(this, getString(R.string.editor_update_game_failed),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, getString(R.string.editor_update_game_successful),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            finish();
         }
     }
 
