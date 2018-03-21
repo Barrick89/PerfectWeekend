@@ -3,10 +3,14 @@ package com.mahausch.perfectweekend;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.UriMatcher;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,7 +51,8 @@ import butterknife.ButterKnife;
 
 public class EditorActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String TAG = EditorActivity.class.getSimpleName();
     private static final int PICK_IMAGE_REQUEST = 0;
@@ -82,7 +87,7 @@ public class EditorActivity extends AppCompatActivity implements
     EditText descriptionEditText;
 
     @BindView(R.id.location_textview)
-    TextView textView;
+    TextView locationTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -177,7 +182,7 @@ public class EditorActivity extends AppCompatActivity implements
 
             String placeName = place.getName().toString();
             placeID = place.getId();
-            textView.setText(placeName);
+            locationTextView.setText(placeName);
         }
     }
 
@@ -288,6 +293,50 @@ public class EditorActivity extends AppCompatActivity implements
             }
             finish();
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String[] projection;
+        if (currentUri.equals(LocationEntry.CONTENT_URI)) {
+            projection = new String[]{
+                    LocationEntry._ID,
+                    LocationEntry.COLUMN_LOCATION_IMAGE,
+                    LocationEntry.COLUMN_LOCATION_NAME,
+                    LocationEntry.COLUMN_LOCATION_DESCRIPTION,
+                    LocationEntry.COLUMN_LOCATION_POSITION
+            };
+        } else {
+            projection = null;
+        }
+        return new CursorLoader(this, currentUri, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor.moveToFirst()) {
+            int imageColumnIndex = cursor.getColumnIndex("image");
+            int nameColumnIndex = cursor.getColumnIndex("name");
+            int descriptionColumnIndex = cursor.getColumnIndex("description");
+            int positionColumnIndex = cursor.getColumnIndex("position");
+
+            String locationImage = cursor.getString(imageColumnIndex);
+            String locationName = cursor.getString(nameColumnIndex);
+            String locationDescription = cursor.getString(descriptionColumnIndex);
+            String locationPosition = cursor.getString(positionColumnIndex);
+
+            imageView.setImageURI(Uri.parse(locationImage));
+            nameEditText.setText(locationName);
+            descriptionEditText.setText(locationDescription);
+            locationTextView.setText(locationPosition);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        nameEditText.setText("");
+        descriptionEditText.setText("");
+        locationTextView.setText("");
     }
 
 }
