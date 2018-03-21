@@ -296,6 +296,10 @@ public class EditorActivity extends AppCompatActivity implements
         }
     }
 
+    /*
+    * If an existing location gets edited, the CursorLoader
+    * loads the existing information from the database
+    */
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection;
