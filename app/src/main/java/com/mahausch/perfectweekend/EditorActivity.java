@@ -63,6 +63,7 @@ public class EditorActivity extends AppCompatActivity implements
 
     private Uri currentUri;
     private Uri imageUri;
+    private String placeName;
     private String placeID;
 
     private static final int LOCATION = 100;
@@ -180,7 +181,7 @@ public class EditorActivity extends AppCompatActivity implements
                 return;
             }
 
-            String placeName = place.getName().toString();
+            placeName = place.getName().toString();
             placeID = place.getId();
             locationTextView.setText(placeName);
         }
@@ -249,7 +250,7 @@ public class EditorActivity extends AppCompatActivity implements
     public void saveLocation(View view) {
         if (imageUri == null ||
                 TextUtils.isEmpty(nameEditText.getText()) ||
-                placeID == null) {
+                TextUtils.isEmpty(placeName)) {
             Toast.makeText(this, getString(R.string.missing_input),
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -262,7 +263,7 @@ public class EditorActivity extends AppCompatActivity implements
                     values.put(LocationEntry.COLUMN_LOCATION_IMAGE, imageUri.toString());
                     values.put(LocationEntry.COLUMN_LOCATION_NAME, nameEditText.getText().toString().trim());
                     values.put(LocationEntry.COLUMN_LOCATION_DESCRIPTION, descriptionEditText.getText().toString());
-                    values.put(LocationEntry.COLUMN_LOCATION_POSITION, placeID);
+                    values.put(LocationEntry.COLUMN_LOCATION_POSITION, placeName);
                     break;
 
                 default:
