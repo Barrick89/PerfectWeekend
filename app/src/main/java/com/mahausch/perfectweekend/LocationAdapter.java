@@ -44,12 +44,12 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         int nameIndex = mCursor.getColumnIndex(LocationEntry.COLUMN_LOCATION_NAME);
         int imageIndex = mCursor.getColumnIndex(LocationEntry.COLUMN_LOCATION_IMAGE);
 
-        long locationId = mCursor.getLong(idIndex);
         String locationName = mCursor.getString(nameIndex);
         String locationImage = mCursor.getString(imageIndex);
 
         holder.overviewName.setText(String.valueOf(locationName));
         holder.overviewImage.setImageURI(Uri.parse(locationImage));
+        holder.overviewImage.setTag(locationImage);
     }
 
     public void swapCursor(Cursor newCursor) {

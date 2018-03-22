@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,5 +70,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    public void onLocationClick(View view) {
+        ImageView imgView = (ImageView) view.findViewById(R.id.overview_image);
+        String imageName = (String) imgView.getTag();
+        Intent intent = new Intent(getBaseContext(), DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_PLANT_ID, imageName);
+        startActivity(intent);
     }
 }
