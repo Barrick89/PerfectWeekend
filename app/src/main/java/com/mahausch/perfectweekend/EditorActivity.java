@@ -167,12 +167,17 @@ public class EditorActivity extends AppCompatActivity implements
                 imageUri = resultData.getData();
                 imageView.setImageURI(imageUri);
                 imageView.invalidate();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
             }
         } else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
 
-
             imageView.setImageURI(imageUri);
-                imageView.invalidate();
+            imageView.invalidate();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                getContentResolver().takePersistableUriPermission(imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
 
         } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(this, resultData);
