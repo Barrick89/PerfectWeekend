@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void onLocationClick(View view) {
         ImageView imgView = (ImageView) view.findViewById(R.id.overview_image);
-        String imageName = (String) imgView.getTag();
+        long locationID = (long) imgView.getTag();
         Intent intent = new Intent(getBaseContext(), DetailActivity.class);
-        intent.putExtra(DetailActivity.EXTRA_PLANT_ID, imageName);
+        intent.putExtra(DetailActivity.EXTRA_LOCATION_ID, locationID);
         startActivity(intent);
     }
 }

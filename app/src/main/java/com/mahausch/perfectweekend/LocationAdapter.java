@@ -49,7 +49,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
         holder.overviewName.setText(String.valueOf(locationName));
         holder.overviewImage.setImageURI(Uri.parse(locationImage));
-        holder.overviewImage.setTag(locationImage);
+        holder.overviewImage.setTag(idIndex);
     }
 
     public void swapCursor(Cursor newCursor) {
