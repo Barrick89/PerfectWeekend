@@ -1,7 +1,9 @@
 package com.mahausch.perfectweekend;
 
 
+import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -9,23 +11,30 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
+import static com.mahausch.perfectweekend.data.LocationContract.BASE_CONTENT_URI;
 import static com.mahausch.perfectweekend.data.LocationContract.LocationEntry.CONTENT_URI;
+import static com.mahausch.perfectweekend.data.LocationContract.PATH_LOCATIONS;
 
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String EXTRA_LOCATION_ID = "com.mahausch.perfectweekend.extra.LOCATION_ID";
-    public static final int LOCATION_DETAIL_LOADER_ID = 1;
+    private static final int LOCATION_DETAIL_LOADER_ID = 1;
+    private long locationID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_detail);
 
+        locationID = getIntent().getLongExtra(EXTRA_LOCATION_ID, 0);
+
         getSupportLoaderManager().initLoader(LOCATION_DETAIL_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri SINGLE_LOCATION_URI = ContentUris.withAppendedId(
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATIONS).build(), locationID);
         return new CursorLoader(this, CONTENT_URI, null,
                 null, null, null);
     }
@@ -33,7 +42,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        adapter.swapCursor(data);
+
+
     }
 
     @Override
