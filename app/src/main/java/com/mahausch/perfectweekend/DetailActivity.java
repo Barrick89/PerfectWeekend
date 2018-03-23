@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -58,7 +60,19 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
 
+        int nameIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_NAME);
+        int imageIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_IMAGE);
+        int descriptionIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_DESCRIPTION);
+        int positionIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_POSITION);
 
+        String locationName = data.getString(nameIndex);
+        String locationImage = data.getString(imageIndex);
+        String locationDescription = data.getString(descriptionIndex);
+        String locationPosition = data.getString(positionIndex);
+
+        locationNameTextView.setText(String.valueOf(locationName));
+        locationImageView.setImageURI(Uri.parse(locationImage));
+        locationDescriptionTextView.setText(locationDescription);
     }
 
     @Override
