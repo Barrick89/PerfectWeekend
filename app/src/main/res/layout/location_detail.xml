@@ -20,6 +20,7 @@
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
             <ImageView
+                android:id="@+id/detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
@@ -52,19 +53,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/location_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_name"
                     android:textColor="#FFF"
                     android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/app_name"
-                    android:textColor="#FFF"
-                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -78,6 +71,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:id="@+id/location_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin" />
