@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.mahausch.perfectweekend.data.LocationContract.BASE_CONTENT_URI;
-import static com.mahausch.perfectweekend.data.LocationContract.LocationEntry.CONTENT_URI;
 import static com.mahausch.perfectweekend.data.LocationContract.PATH_LOCATIONS;
 
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -52,7 +51,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri SINGLE_LOCATION_URI = ContentUris.withAppendedId(
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATIONS).build(), locationID);
-        return new CursorLoader(this, CONTENT_URI, null,
+        return new CursorLoader(this, SINGLE_LOCATION_URI, null,
                 null, null, null);
     }
 
