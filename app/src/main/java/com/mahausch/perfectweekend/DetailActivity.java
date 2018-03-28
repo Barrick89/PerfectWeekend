@@ -3,6 +3,7 @@ package com.mahausch.perfectweekend;
 
 import android.content.ContentUris;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,6 +78,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 return true;
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
+                return true;
+            case R.id.action_edit:
+                Intent intent = new Intent(DetailActivity.this, EditorActivity.class);
+                intent.setData(locationUri);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
