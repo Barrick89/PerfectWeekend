@@ -12,6 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,6 +56,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         locationID = getIntent().getLongExtra(EXTRA_LOCATION_ID, 0);
 
         getSupportLoaderManager().initLoader(LOCATION_DETAIL_LOADER_ID, null, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
     }
 
     @Override
