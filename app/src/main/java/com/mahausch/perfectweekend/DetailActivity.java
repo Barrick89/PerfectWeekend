@@ -82,6 +82,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_edit:
                 Intent intent = new Intent(DetailActivity.this, EditorActivity.class);
                 intent.setData(locationUri);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
