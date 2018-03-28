@@ -66,6 +66,7 @@ public class EditorActivity extends AppCompatActivity implements
     private String placeName;
     private String placeID;
 
+    private static final int LOCATION_LOADER = 0;
     private static final int LOCATION = 100;
     private static final int LOCATION_ID = 101;
 
@@ -101,6 +102,7 @@ public class EditorActivity extends AppCompatActivity implements
                 setTitle(getString(R.string.add_location_title));
             } else {
                 setTitle(getString(R.string.edit_location_title));
+                getLoaderManager().initLoader(LOCATION_LOADER, null, this);
             }
         }
 
@@ -115,6 +117,7 @@ public class EditorActivity extends AppCompatActivity implements
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, this)
                 .build();
+
     }
 
     @Override
@@ -309,17 +312,13 @@ public class EditorActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection;
-        if (currentUri.equals(LocationEntry.CONTENT_URI)) {
-            projection = new String[]{
+        projection = new String[]{
                     LocationEntry._ID,
                     LocationEntry.COLUMN_LOCATION_IMAGE,
                     LocationEntry.COLUMN_LOCATION_NAME,
                     LocationEntry.COLUMN_LOCATION_DESCRIPTION,
                     LocationEntry.COLUMN_LOCATION_POSITION
-            };
-        } else {
-            projection = null;
-        }
+        };
         return new CursorLoader(this, currentUri, projection, null, null, null);
     }
 
