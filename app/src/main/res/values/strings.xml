@@ -16,4 +16,9 @@
     <string name="editor_update_game_successful">Location updated.</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
+    <string name="delete_dialog_msg">Delete the location?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_location_failed">Error deleting location!</string>
+    <string name="delete_location_successful">Location deleted.</string>
 </resources>

@@ -2,6 +2,7 @@ package com.mahausch.perfectweekend;
 
 
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,12 +11,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
 
@@ -29,7 +32,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     public static final String EXTRA_LOCATION_ID = "com.mahausch.perfectweekend.extra.LOCATION_ID";
     private static final int LOCATION_DETAIL_LOADER_ID = 1;
-    private long locationID;
+    private static Uri locationUri;
 
     @BindView(R.id.detail_image)
     ImageView locationImageView;
@@ -53,7 +56,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        locationID = getIntent().getLongExtra(EXTRA_LOCATION_ID, 0);
+        long locationID = getIntent().getLongExtra(EXTRA_LOCATION_ID, 0);
+        locationUri = ContentUris.withAppendedId(
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATIONS).build(), locationID);
 
         getSupportLoaderManager().initLoader(LOCATION_DETAIL_LOADER_ID, null, this);
     }
@@ -70,16 +75,51 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.action_delete:
+                showDeleteConfirmationDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteLocation();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteLocation() {
+        int rowsDeleted = getContentResolver().delete(locationUri, null, null);
+        if (rowsDeleted == 0) {
+            Toast.makeText(this, getString(R.string.delete_location_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.delete_location_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri SINGLE_LOCATION_URI = ContentUris.withAppendedId(
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATIONS).build(), locationID);
-        return new CursorLoader(this, SINGLE_LOCATION_URI, null,
+        return new CursorLoader(this, locationUri, null,
                 null, null, null);
     }
 
