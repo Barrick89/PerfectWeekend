@@ -259,7 +259,7 @@ public class EditorActivity extends AppCompatActivity implements
     public void saveLocation(View view) {
         if (imageUri == null ||
                 TextUtils.isEmpty(nameEditText.getText()) ||
-                TextUtils.isEmpty(placeName)) {
+                TextUtils.isEmpty(locationTextView.getText())) {
             Toast.makeText(this, getString(R.string.missing_input),
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -339,7 +339,8 @@ public class EditorActivity extends AppCompatActivity implements
             imageView.setImageURI(imageUri);
             nameEditText.setText(locationName);
             descriptionEditText.setText(locationDescription);
-            locationTextView.setText(locationPosition);
+            placeName = locationPosition;
+            locationTextView.setText(placeName);
         }
     }
 
