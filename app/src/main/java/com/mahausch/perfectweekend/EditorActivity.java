@@ -335,7 +335,8 @@ public class EditorActivity extends AppCompatActivity implements
             String locationDescription = cursor.getString(descriptionColumnIndex);
             String locationPosition = cursor.getString(positionColumnIndex);
 
-            imageView.setImageURI(Uri.parse(locationImage));
+            imageUri = Uri.parse(locationImage);
+            imageView.setImageURI(imageUri);
             nameEditText.setText(locationName);
             descriptionEditText.setText(locationDescription);
             locationTextView.setText(locationPosition);
