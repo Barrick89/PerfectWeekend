@@ -46,6 +46,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private double longitude;
     private double latitude;
+    private String name;
 
     @BindView(R.id.detail_image)
     ImageView locationImageView;
@@ -98,7 +99,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
         // Add a marker in Sydney and move the camera
         LatLng location = new LatLng(latitude, longitude);
-        map.addMarker(new MarkerOptions().position(location).title("Favorite location"));
+        map.addMarker(new MarkerOptions().position(location).title(name));
         map.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 
@@ -184,6 +185,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         double locationLatitude = data.getDouble(latitudeIndex);
 
         locationNameTextView.setText(String.valueOf(locationName));
+        name = locationName;
         locationImageView.setImageURI(Uri.parse(locationImage));
         locationDescriptionTextView.setText(locationDescription);
         longitude = locationLongitude;
