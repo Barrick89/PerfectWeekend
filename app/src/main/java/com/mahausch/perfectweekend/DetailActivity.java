@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -100,7 +101,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         // Add a marker in Sydney and move the camera
         LatLng location = new LatLng(latitude, longitude);
         map.addMarker(new MarkerOptions().position(location).title(name));
-        map.moveCamera(CameraUpdateFactory.newLatLng(location));
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 6);
+        map.animateCamera(update);
     }
 
     @Override
