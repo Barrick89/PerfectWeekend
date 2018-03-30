@@ -72,11 +72,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
         long locationID = getIntent().getLongExtra(EXTRA_LOCATION_ID, 0);
         locationUri = ContentUris.withAppendedId(
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATIONS).build(), locationID);
@@ -186,6 +181,11 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         locationNameTextView.setText(String.valueOf(locationName));
         locationImageView.setImageURI(Uri.parse(locationImage));
         locationDescriptionTextView.setText(locationDescription);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
