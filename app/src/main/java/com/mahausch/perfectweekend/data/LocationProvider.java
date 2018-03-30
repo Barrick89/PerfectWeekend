@@ -96,6 +96,16 @@ public class LocationProvider extends ContentProvider {
             throw new IllegalArgumentException("Location requires valid position");
         }
 
+        Double longitude = values.getAsDouble(LocationEntry.COLUMN_LOCATION_LONGITUDE);
+        if (longitude == null) {
+            throw new IllegalArgumentException("Location requires valid longitude");
+        }
+
+        Double latitude = values.getAsDouble(LocationEntry.COLUMN_LOCATION_LATITUDE);
+        if (latitude == null) {
+            throw new IllegalArgumentException("Location requires valid latitude");
+        }
+
         SQLiteDatabase db = mLocationDbHelper.getWritableDatabase();
 
         long id = db.insert(LocationEntry.TABLE_NAME, null, values);
@@ -182,6 +192,20 @@ public class LocationProvider extends ContentProvider {
             String position = values.getAsString(LocationEntry.COLUMN_LOCATION_POSITION);
             if (position == null) {
                 throw new IllegalArgumentException("Location requires valid position");
+            }
+        }
+
+        if (values.containsKey(LocationEntry.COLUMN_LOCATION_LONGITUDE)) {
+            Double longitude = values.getAsDouble(LocationEntry.COLUMN_LOCATION_LONGITUDE);
+            if (longitude == null) {
+                throw new IllegalArgumentException("Location requires valid longitude");
+            }
+        }
+
+        if (values.containsKey(LocationEntry.COLUMN_LOCATION_LATITUDE)) {
+            Double latitude = values.getAsDouble(LocationEntry.COLUMN_LOCATION_LATITUDE);
+            if (latitude == null) {
+                throw new IllegalArgumentException("Location requires valid latitude");
             }
         }
 

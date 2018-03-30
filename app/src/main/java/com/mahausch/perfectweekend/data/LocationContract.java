@@ -25,5 +25,7 @@ public class LocationContract {
         public static final String COLUMN_LOCATION_IMAGE = "image";
         public static final String COLUMN_LOCATION_DESCRIPTION = "description";
         public static final String COLUMN_LOCATION_POSITION = "position";
+        public static final String COLUMN_LOCATION_LONGITUDE = "longitude";
+        public static final String COLUMN_LOCATION_LATITUDE = "latitude";
     }
 }
