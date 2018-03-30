@@ -1,5 +1,7 @@
 package com.mahausch.perfectweekend;
 
+
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLocationClick(View view) {
         ImageView imgView = (ImageView) view.findViewById(R.id.overview_image);
         long locationID = (long) imgView.getTag();
-        Intent intent = new Intent(getBaseContext(), DetailActivity.class);
+        Intent intent = new Intent(getBaseContext(), Activity.class);
         intent.putExtra(DetailActivity.EXTRA_LOCATION_ID, locationID);
         startActivity(intent);
     }
