@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.mahausch.perfectweekend.data.LocationContract;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
 
@@ -64,7 +65,8 @@ public class EditorActivity extends AppCompatActivity implements
     private Uri currentUri;
     private Uri imageUri;
     private String placeName;
-    private String placeID;
+    private double longitude;
+    private double latitude;
 
     private static final int LOCATION_LOADER = 0;
     private static final int LOCATION = 100;
@@ -191,7 +193,9 @@ public class EditorActivity extends AppCompatActivity implements
             }
 
             placeName = place.getName().toString();
-            placeID = place.getId();
+            LatLng latLng = place.getLatLng();
+            longitude = latLng.longitude;
+            latitude = latLng.latitude;
             locationTextView.setText(placeName);
         }
     }
@@ -273,6 +277,8 @@ public class EditorActivity extends AppCompatActivity implements
                     values.put(LocationEntry.COLUMN_LOCATION_NAME, nameEditText.getText().toString().trim());
                     values.put(LocationEntry.COLUMN_LOCATION_DESCRIPTION, descriptionEditText.getText().toString());
                     values.put(LocationEntry.COLUMN_LOCATION_POSITION, placeName);
+                    values.put(LocationEntry.COLUMN_LOCATION_LONGITUDE, longitude);
+                    values.put(LocationEntry.COLUMN_LOCATION_LATITUDE, latitude);
                     break;
 
                 default:
@@ -317,7 +323,9 @@ public class EditorActivity extends AppCompatActivity implements
                     LocationEntry.COLUMN_LOCATION_IMAGE,
                     LocationEntry.COLUMN_LOCATION_NAME,
                     LocationEntry.COLUMN_LOCATION_DESCRIPTION,
-                    LocationEntry.COLUMN_LOCATION_POSITION
+                LocationEntry.COLUMN_LOCATION_POSITION,
+                LocationEntry.COLUMN_LOCATION_LONGITUDE,
+                LocationEntry.COLUMN_LOCATION_LATITUDE
         };
         return new CursorLoader(this, currentUri, projection, null, null, null);
     }
@@ -329,11 +337,15 @@ public class EditorActivity extends AppCompatActivity implements
             int nameColumnIndex = cursor.getColumnIndex("name");
             int descriptionColumnIndex = cursor.getColumnIndex("description");
             int positionColumnIndex = cursor.getColumnIndex("position");
+            int longitudeColumnIndex = cursor.getColumnIndex("longitude");
+            int latitudeColumnIndex = cursor.getColumnIndex("latitude");
 
             String locationImage = cursor.getString(imageColumnIndex);
             String locationName = cursor.getString(nameColumnIndex);
             String locationDescription = cursor.getString(descriptionColumnIndex);
             String locationPosition = cursor.getString(positionColumnIndex);
+            double locationLongitude = cursor.getDouble(longitudeColumnIndex);
+            double locationLatitude = cursor.getDouble(latitudeColumnIndex);
 
             imageUri = Uri.parse(locationImage);
             imageView.setImageURI(imageUri);
@@ -341,6 +353,8 @@ public class EditorActivity extends AppCompatActivity implements
             descriptionEditText.setText(locationDescription);
             placeName = locationPosition;
             locationTextView.setText(placeName);
+            longitude = locationLongitude;
+            latitude = locationLatitude;
         }
     }
 
