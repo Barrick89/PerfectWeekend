@@ -44,6 +44,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private static final int LOCATION_DETAIL_LOADER_ID = 1;
     private static Uri locationUri;
 
+    private double longitude;
+    private double latitude;
+
     @BindView(R.id.detail_image)
     ImageView locationImageView;
 
@@ -94,9 +97,9 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         map = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng location = new LatLng(latitude, longitude);
+        map.addMarker(new MarkerOptions().position(location).title("Favorite location"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 
     @Override
@@ -171,16 +174,20 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         int nameIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_NAME);
         int imageIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_IMAGE);
         int descriptionIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_DESCRIPTION);
-        int positionIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_POSITION);
+        int longitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LONGITUDE);
+        int latitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LATITUDE);
 
         String locationName = data.getString(nameIndex);
         String locationImage = data.getString(imageIndex);
         String locationDescription = data.getString(descriptionIndex);
-        String locationPosition = data.getString(positionIndex);
+        double locationLongitude = data.getDouble(longitudeIndex);
+        double locationLatitude = data.getDouble(latitudeIndex);
 
         locationNameTextView.setText(String.valueOf(locationName));
         locationImageView.setImageURI(Uri.parse(locationImage));
         locationDescriptionTextView.setText(locationDescription);
+        longitude = locationLongitude;
+        latitude = locationLatitude;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
