@@ -41,6 +41,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.mahausch.perfectweekend.data.LocationContract;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -177,7 +178,7 @@ public class EditorActivity extends AppCompatActivity implements
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
                 }
-                imageView.setImageURI(imageUri);
+                Picasso.get().load(imageUri).into(imageView);
                 imageView.invalidate();
             }
         } else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
