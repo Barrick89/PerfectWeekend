@@ -23,10 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
@@ -45,6 +45,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     public static final String EXTRA_LOCATION_ID = "com.mahausch.perfectweekend.extra.LOCATION_ID";
     private static final int LOCATION_DETAIL_LOADER_ID = 1;
     private static Uri locationUri;
+    private static CameraPosition mapPosition;
 
     private double longitude;
     private double latitude;
@@ -88,6 +89,22 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         getSupportLoaderManager().initLoader(LOCATION_DETAIL_LOADER_ID, null, this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (map != null) {
+            outState.putParcelable("mapPosition", map.getCameraPosition());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mapPosition = savedInstanceState.getParcelable("mapPosition");
+    }
+
 
     /**
      * Manipulates the map once available.
@@ -105,8 +122,12 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         // Add a marker in Sydney and move the camera
         LatLng location = new LatLng(latitude, longitude);
         map.addMarker(new MarkerOptions().position(location).title(name));
-        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 6);
-        map.animateCamera(update);
+
+        if (mapPosition != null) {
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(mapPosition));
+        } else {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 6));
+        }
     }
 
     @Override
@@ -198,15 +219,17 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         latitude = locationLatitude;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        ScrollableMapFragment mapFragment = (ScrollableMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        mapFragment.setListener(new ScrollableMapFragment.OnTouchListener() {
-            @Override
-            public void onTouch() {
-                scrollView.requestDisallowInterceptTouchEvent(true);
-            }
-        });
+        if (map == null) {
+            ScrollableMapFragment mapFragment = (ScrollableMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+            mapFragment.setListener(new ScrollableMapFragment.OnTouchListener() {
+                @Override
+                public void onTouch() {
+                    scrollView.requestDisallowInterceptTouchEvent(true);
+                }
+            });
+        }
     }
 
     @Override
