@@ -30,7 +30,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -192,7 +191,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
         locationNameTextView.setText(String.valueOf(locationName));
         name = locationName;
-        Picasso.get().load(Uri.parse(locationImage)).into(locationImageView);
+        locationImageView.setImageURI(Uri.parse(locationImage));
         locationDescriptionTextView.setText(locationDescription);
         longitude = locationLongitude;
         latitude = locationLatitude;
