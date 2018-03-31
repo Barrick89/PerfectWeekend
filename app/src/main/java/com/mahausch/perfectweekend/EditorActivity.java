@@ -183,7 +183,7 @@ public class EditorActivity extends AppCompatActivity implements
             }
         } else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
 
-            imageView.setImageURI(imageUri);
+            Picasso.get().load(imageUri).into(imageView);
             imageView.invalidate();
 
         } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
@@ -220,6 +220,7 @@ public class EditorActivity extends AppCompatActivity implements
                         "com.mahausch.perfectweekend.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                imageUri = photoURI;
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
@@ -237,7 +238,6 @@ public class EditorActivity extends AppCompatActivity implements
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        imageUri = Uri.parse(image.getAbsolutePath());
         return image;
     }
 
