@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager = new LinearLayoutManager(this);
         recycler.setLayoutManager(manager);
 
         adapter = new LocationAdapter(this, null);
