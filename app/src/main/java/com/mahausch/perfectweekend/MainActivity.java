@@ -4,6 +4,7 @@ package com.mahausch.perfectweekend;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     RecyclerView recycler;
 
     private LocationAdapter adapter;
+    private LinearLayoutManager manager;
+
+    static Parcelable listState;
 
     public static final int LOCATION_LOADER_ID = 0;
 
@@ -47,13 +51,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        recycler.setLayoutManager(
-                new LinearLayoutManager(this)
-        );
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(manager);
+
         adapter = new LocationAdapter(this, null);
         recycler.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(LOCATION_LOADER_ID, null, this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        listState = manager.onSaveInstanceState();
+        outState.putParcelable("listState", listState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        listState = savedInstanceState.getParcelable("listState");
     }
 
     @Override
@@ -66,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
         adapter.swapCursor(data);
+        if (listState != null) {
+            manager.onRestoreInstanceState(listState);
+        }
     }
 
     @Override
