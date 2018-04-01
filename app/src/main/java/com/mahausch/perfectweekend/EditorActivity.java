@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.UriMatcher;
@@ -21,10 +22,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -80,7 +84,22 @@ public class EditorActivity extends AppCompatActivity implements
         sUriMatcher.addURI(LocationContract.CONTENT_AUTHORITY, LocationContract.PATH_LOCATIONS + "/#", LOCATION_ID);
     }
 
+    private boolean locationHasChanged = false;
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            locationHasChanged = true;
+            return false;
+        }
+    };
+
     private GoogleApiClient client;
+
+    @BindView(R.id.take_photo_button)
+    Button takePhotoButton;
+
+    @BindView(R.id.storage_button)
+    Button imageFromStorageButton;
 
     @BindView(R.id.imageview)
     ImageView imageView;
@@ -90,6 +109,9 @@ public class EditorActivity extends AppCompatActivity implements
 
     @BindView(R.id.description_edittext)
     EditText descriptionEditText;
+
+    @BindView(R.id.location_button)
+    Button locationButton;
 
     @BindView(R.id.location_textview)
     TextView locationTextView;
@@ -112,6 +134,13 @@ public class EditorActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         ButterKnife.bind(this);
+
+        takePhotoButton.setOnTouchListener(touchListener);
+        imageFromStorageButton.setOnTouchListener(touchListener);
+        nameEditText.setOnTouchListener(touchListener);
+        descriptionEditText.setOnTouchListener(touchListener);
+        locationButton.setOnTouchListener(touchListener);
+
 
         client = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -397,6 +426,39 @@ public class EditorActivity extends AppCompatActivity implements
         placeName = savedInstanceState.getString("placeName");
         longitude = savedInstanceState.getDouble("longitude");
         latitude = savedInstanceState.getDouble("latitude");
+    }
+
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!locationHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                };
+        showUnsavedChangesDialog(discardButtonClickListener);
     }
 
 }

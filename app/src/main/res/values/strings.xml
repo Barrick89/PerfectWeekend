@@ -22,4 +22,7 @@
     <string name="delete_location_failed">Error deleting location!</string>
     <string name="delete_location_successful">Location deleted.</string>
     <string name="title_activity_detail">Detail</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="discard">Discard</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
 </resources>
