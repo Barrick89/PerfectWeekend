@@ -138,6 +138,18 @@ public class EditorActivity extends AppCompatActivity implements
         Log.e(TAG, "API Client Connection Failed!");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (imageUri != null) {
+            Picasso.get().load(imageUri).into(imageView);
+        }
+
+        if (placeName != null) {
+            locationTextView.setText(placeName);
+        }
+    }
 
     // When the "Image from Storage" button was clicked, this method is triggered
     public void getImageFromStorage(View view) {
@@ -364,6 +376,26 @@ public class EditorActivity extends AppCompatActivity implements
         nameEditText.setText("");
         descriptionEditText.setText("");
         locationTextView.setText("");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("imageUri", imageUri);
+        outState.putString("placeName", placeName);
+        outState.putDouble("longitude", longitude);
+        outState.putDouble("latitude", latitude);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        imageUri = savedInstanceState.getParcelable("imageUri");
+        placeName = savedInstanceState.getString("placeName");
+        longitude = savedInstanceState.getDouble("longitude");
+        latitude = savedInstanceState.getDouble("latitude");
     }
 
 }
