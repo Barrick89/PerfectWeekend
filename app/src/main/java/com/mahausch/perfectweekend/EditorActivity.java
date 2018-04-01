@@ -138,6 +138,7 @@ public class EditorActivity extends AppCompatActivity implements
         Log.e(TAG, "API Client Connection Failed!");
     }
 
+    //Set imageView and locationTextView when the device gets turned to landscape mode
     @Override
     protected void onResume() {
         super.onResume();
