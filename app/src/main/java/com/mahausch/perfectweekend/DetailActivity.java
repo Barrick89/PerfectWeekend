@@ -96,6 +96,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         if (map != null) {
             outState.putParcelable("mapPosition", map.getCameraPosition());
         }
+
+        outState.putInt("scrollState", scrollView.getVerticalScrollbarPosition());
     }
 
     @Override
@@ -103,6 +105,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onRestoreInstanceState(savedInstanceState);
 
         mapPosition = savedInstanceState.getParcelable("mapPosition");
+        scrollView.setVerticalScrollbarPosition(savedInstanceState.getInt("scrollState"));
     }
 
 
