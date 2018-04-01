@@ -25,7 +25,7 @@
             <ImageView
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="400dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
@@ -76,9 +76,10 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/location_description"
@@ -93,7 +94,7 @@
                 android:layout_height="350dp"
                 tools:context="com.mahausch.perfectweekend.DetailActivity" />
 
-        </FrameLayout>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
