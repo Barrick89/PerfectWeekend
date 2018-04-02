@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,7 @@ public class EditorActivity extends AppCompatActivity implements
     private String placeName;
     private double longitude;
     private double latitude;
+    private int scrollState;
 
     private static final int LOCATION_LOADER = 0;
     private static final int LOCATION = 100;
@@ -94,6 +96,9 @@ public class EditorActivity extends AppCompatActivity implements
     };
 
     private GoogleApiClient client;
+
+    @BindView(R.id.editor_scrollview)
+    ScrollView scrollView;
 
     @BindView(R.id.take_photo_button)
     Button takePhotoButton;
@@ -179,6 +184,8 @@ public class EditorActivity extends AppCompatActivity implements
         if (placeName != null) {
             locationTextView.setText(placeName);
         }
+
+        scrollView.setVerticalScrollbarPosition(scrollState);
     }
 
     // When the "Image from Storage" button was clicked, this method is triggered
@@ -416,6 +423,7 @@ public class EditorActivity extends AppCompatActivity implements
         outState.putString("placeName", placeName);
         outState.putDouble("longitude", longitude);
         outState.putDouble("latitude", latitude);
+        outState.putInt("scrollState", scrollView.getVerticalScrollbarPosition());
     }
 
     @Override
@@ -426,6 +434,7 @@ public class EditorActivity extends AppCompatActivity implements
         placeName = savedInstanceState.getString("placeName");
         longitude = savedInstanceState.getDouble("longitude");
         latitude = savedInstanceState.getDouble("latitude");
+        scrollState = savedInstanceState.getInt("scrollState");
     }
 
     private void showUnsavedChangesDialog(
