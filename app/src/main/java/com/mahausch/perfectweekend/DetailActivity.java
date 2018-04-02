@@ -50,6 +50,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private double longitude;
     private double latitude;
     private String name;
+    private int scrollState;
 
     @BindView(R.id.detail_image)
     ImageView locationImageView;
@@ -105,9 +106,14 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onRestoreInstanceState(savedInstanceState);
 
         mapPosition = savedInstanceState.getParcelable("mapPosition");
-        scrollView.setVerticalScrollbarPosition(savedInstanceState.getInt("scrollState"));
+        scrollState = savedInstanceState.getInt("scrollState");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scrollView.setVerticalScrollbarPosition(scrollState);
+    }
 
     /**
      * Manipulates the map once available.
