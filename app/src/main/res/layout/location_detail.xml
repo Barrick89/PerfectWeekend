@@ -26,6 +26,7 @@
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
+                android:contentDescription="@string/location_image_content_description"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />

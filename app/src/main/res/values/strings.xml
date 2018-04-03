@@ -25,4 +25,7 @@
     <string name="keep_editing">Keep editing</string>
     <string name="discard">Discard</string>
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="location_image_content_description">location image</string>
+    <string name="add_location_content_description">add location</string>
+    <string name="image_preview_content_description">image preview</string>
 </resources>

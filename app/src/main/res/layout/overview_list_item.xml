@@ -18,6 +18,7 @@
             android:id="@+id/overview_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height"
+            android:contentDescription="@string/location_image_content_description"
             android:scaleType="centerCrop" />
 
         <LinearLayout
