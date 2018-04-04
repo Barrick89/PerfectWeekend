@@ -229,12 +229,12 @@ public class EditorActivity extends AppCompatActivity implements
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
                 }
-                Picasso.get().load(imageUri).into(imageView);
+                Picasso.get().load(imageUri).fit().centerCrop().into(imageView);
                 imageView.invalidate();
             }
         } else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
 
-            Picasso.get().load(imageUri).into(imageView);
+            Picasso.get().load(imageUri).fit().centerCrop().into(imageView);
             imageView.invalidate();
 
         } else if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {

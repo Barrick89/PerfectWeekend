@@ -50,7 +50,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         String locationImage = mCursor.getString(imageIndex);
 
         holder.overviewName.setText(String.valueOf(locationName));
-        Picasso.get().load(Uri.parse(locationImage)).into(holder.overviewImage);
+        Picasso.get().load(Uri.parse(locationImage)).fit().centerCrop().into(holder.overviewImage);
         holder.overviewImage.setTag(locationId);
     }
 

@@ -222,7 +222,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
         locationNameTextView.setText(String.valueOf(locationName));
         name = locationName;
-        Picasso.get().load(Uri.parse(locationImage)).into(locationImageView);
+        Picasso.get().load(Uri.parse(locationImage)).fit().centerCrop().into(locationImageView);
         locationDescriptionTextView.setText(locationDescription);
         longitude = locationLongitude;
         latitude = locationLatitude;
