@@ -4,6 +4,7 @@ package com.mahausch.perfectweekend;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
     private Context mContext;
     private Cursor mCursor;
+    private final LocationItemClickListener locationItemClickListener;
 
 
-    public LocationAdapter(Context context, Cursor cursor) {
+    public LocationAdapter(Context context, Cursor cursor,
+                           LocationItemClickListener locationItemClickListener) {
         this.mContext = context;
         this.mCursor = cursor;
+        this.locationItemClickListener = locationItemClickListener;
     }
 
     //Called when RecyclerView needs a new ViewHolder of the given type to represent an item
@@ -38,7 +42,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
     @Override
-    public void onBindViewHolder(LocationViewHolder holder, int position) {
+    public void onBindViewHolder(final LocationViewHolder holder, final int position) {
 
         mCursor.moveToPosition(position);
         int idIndex = mCursor.getColumnIndex(LocationEntry._ID);
@@ -52,6 +56,18 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.overviewName.setText(String.valueOf(locationName));
         Picasso.get().load(Uri.parse(locationImage)).fit().centerCrop().into(holder.overviewImage);
         holder.overviewImage.setTag(locationId);
+        ViewCompat.setTransitionName(holder.overviewImage, locationName);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationItemClickListener.onLocationItemClick(position, holder.overviewImage);
+            }
+        });
+    }
+
+    public interface LocationItemClickListener {
+        void onLocationItemClick(int position, ImageView imageView);
     }
 
     public void swapCursor(Cursor newCursor) {

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,9 +26,11 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.mahausch.perfectweekend.DetailActivity.EXTRA_LOCATION_IMAGE_TRANSITION_NAME;
 import static com.mahausch.perfectweekend.data.LocationContract.LocationEntry.CONTENT_URI;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        LocationAdapter.LocationItemClickListener {
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recycler.setDrawingCacheEnabled(true);
         recycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        adapter = new LocationAdapter(this, null);
+        adapter = new LocationAdapter(this, null, this);
         recycler.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(LOCATION_LOADER_ID, null, this);
@@ -115,11 +120,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    public void onLocationClick(View view) {
-        ImageView imgView = (ImageView) view.findViewById(R.id.overview_image);
-        long locationID = (long) imgView.getTag();
+    @Override
+    public void onLocationItemClick(int position, ImageView imageView) {
+        long locationID = (long) imageView.getTag();
         Intent intent = new Intent(getBaseContext(), DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_LOCATION_ID, locationID);
-        startActivity(intent);
+        intent.putExtra(EXTRA_LOCATION_IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(imageView));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                imageView,
+                ViewCompat.getTransitionName(imageView));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            startActivity(intent, options.toBundle());
+        } else {
+            startActivity(intent);
+        }
     }
 }

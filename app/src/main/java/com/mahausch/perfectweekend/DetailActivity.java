@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -43,6 +44,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private GoogleMap map;
     public static final String EXTRA_LOCATION_ID = "com.mahausch.perfectweekend.extra.LOCATION_ID";
+    public static final String EXTRA_LOCATION_IMAGE_TRANSITION_NAME = "transitionName";
     private static final int LOCATION_DETAIL_LOADER_ID = 1;
     private static Uri locationUri;
     private static CameraPosition mapPosition;
@@ -71,6 +73,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_detail);
+        supportPostponeEnterTransition();
 
         ButterKnife.bind(this);
 
@@ -80,12 +83,18 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
         long locationID = getIntent().getLongExtra(EXTRA_LOCATION_ID, 0);
         locationUri = ContentUris.withAppendedId(
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATIONS).build(), locationID);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            String imageTransitionName = getIntent().getStringExtra(EXTRA_LOCATION_IMAGE_TRANSITION_NAME);
+            locationImageView.setTransitionName(imageTransitionName);
+        }
 
         getSupportLoaderManager().initLoader(LOCATION_DETAIL_LOADER_ID, null, this);
     }
@@ -222,7 +231,23 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
         locationNameTextView.setText(String.valueOf(locationName));
         name = locationName;
-        Picasso.get().load(Uri.parse(locationImage)).fit().centerCrop().into(locationImageView);
+        Picasso.get()
+                .load(Uri.parse(locationImage))
+                .noFade()
+                .fit()
+                .centerCrop()
+                .into(locationImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        supportStartPostponedEnterTransition();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        supportStartPostponedEnterTransition();
+                    }
+                });
+        
         locationDescriptionTextView.setText(locationDescription);
         longitude = locationLongitude;
         latitude = locationLatitude;
