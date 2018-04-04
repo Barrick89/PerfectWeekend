@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +50,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         String locationImage = mCursor.getString(imageIndex);
 
         holder.overviewName.setText(String.valueOf(locationName));
-        holder.overviewImage.setImageURI(Uri.parse(locationImage));
+        Picasso.get().load(Uri.parse(locationImage)).into(holder.overviewImage);
         holder.overviewImage.setTag(locationId);
     }
 
