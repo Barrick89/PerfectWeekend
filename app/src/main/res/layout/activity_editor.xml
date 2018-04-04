@@ -19,7 +19,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/take_photo_button"
             android:onClick="takePhoto"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/storage_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
             android:layout_marginTop="79dp"
             android:text="@string/storage_button"
             android:onClick="getImageFromStorage"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="16dp" />
@@ -113,6 +113,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/pick_location_textview"
             android:onClick="pickLocation"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view_2" />
@@ -124,6 +125,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/location_tag_textview"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location_button"
             android:layout_marginLeft="16dp"
@@ -131,15 +133,21 @@
 
         <TextView
             android:id="@+id/location_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.343"
             app:layout_constraintStart_toEndOf="@+id/location_tag_textview"
             app:layout_constraintTop_toBottomOf="@+id/location_button"
+            app:layout_constraintWidth_default="wrap"
+            app:layout_constraintHorizontal_chainStyle="packed"
             android:textColor="@android:color/black" />
 
         <View
@@ -161,6 +169,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="@string/save_button"
+            android:textSize="14sp"
             android:onClick="saveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
