@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         manager = new LinearLayoutManager(this);
         recycler.setLayoutManager(manager);
+        recycler.setHasFixedSize(true);
+        recycler.setItemViewCacheSize(20);
+        recycler.setDrawingCacheEnabled(true);
+        recycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         adapter = new LocationAdapter(this, null);
         recycler.setAdapter(adapter);
