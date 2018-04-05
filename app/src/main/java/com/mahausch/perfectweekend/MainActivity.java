@@ -16,8 +16,10 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -72,7 +74,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        manager = new LinearLayoutManager(this);
+        //Decide whether to display recipes in grid or list depending on display size
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        if (dpWidth >= 500) {
+            manager = new GridLayoutManager(this, numberOfColumns(), GridLayoutManager.VERTICAL, false);
+        } else {
+            manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        }
+
         recycler.setLayoutManager(manager);
         recycler.setHasFixedSize(true);
         recycler.setItemViewCacheSize(20);
@@ -83,6 +93,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recycler.setAdapter(adapter);
 
         getSupportLoaderManager().initLoader(LOCATION_LOADER_ID, null, this);
+    }
+
+    //Decide how many columns to display depending on display size
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int widthDivider = 600;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
     }
 
     @Override
