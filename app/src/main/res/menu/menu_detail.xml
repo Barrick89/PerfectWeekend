@@ -14,4 +14,10 @@
         android:title="@string/action_delete"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/action_share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="ifRoom" />
+
 </menu>

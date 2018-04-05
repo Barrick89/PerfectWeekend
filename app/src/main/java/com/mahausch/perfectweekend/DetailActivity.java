@@ -48,6 +48,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     private static final int LOCATION_DETAIL_LOADER_ID = 1;
     private static Uri locationUri;
     private static CameraPosition mapPosition;
+    private String locationImage;
 
     private double longitude;
     private double latitude;
@@ -168,6 +169,15 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 intent.setData(locationUri);
                 startActivity(intent);
                 return true;
+            case R.id.action_share:
+                String text = name;
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(locationImage));
+                shareIntent.setType("image/*");
+                startActivity(Intent.createChooser(shareIntent, "Share images..."));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -224,7 +234,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         int latitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LATITUDE);
 
         String locationName = data.getString(nameIndex);
-        String locationImage = data.getString(imageIndex);
+        locationImage = data.getString(imageIndex);
         String locationDescription = data.getString(descriptionIndex);
         double locationLongitude = data.getDouble(longitudeIndex);
         double locationLatitude = data.getDouble(latitudeIndex);
@@ -247,7 +257,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                         supportStartPostponedEnterTransition();
                     }
                 });
-        
+
         locationDescriptionTextView.setText(locationDescription);
         longitude = locationLongitude;
         latitude = locationLatitude;
