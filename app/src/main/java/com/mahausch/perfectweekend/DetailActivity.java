@@ -46,8 +46,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     public static final String EXTRA_LOCATION_ID = "com.mahausch.perfectweekend.extra.LOCATION_ID";
     public static final String EXTRA_LOCATION_IMAGE_TRANSITION_NAME = "transitionName";
     private static final int LOCATION_DETAIL_LOADER_ID = 1;
-    private static Uri locationUri;
-    private static CameraPosition mapPosition;
+    private Uri locationUri;
+    private CameraPosition mapPosition;
     private String locationImage;
 
     private double longitude;
