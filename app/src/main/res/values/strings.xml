@@ -30,4 +30,5 @@
     <string name="image_preview_content_description">image preview</string>
     <string name="mainactivity_title">PerfectWeekend</string>
     <string name="action_share">Share</string>
+    <string name="no_data_available">Please tap the sun to add a favorite location.</string>
 </resources>

@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.recycler_view)
     RecyclerView recycler;
 
+    @BindView(R.id.empty_imageview)
+    ImageView imageView;
+
+    @BindView(R.id.empty_textview)
+    TextView textView;
+
     private LocationAdapter adapter;
     private LinearLayoutManager manager;
 
@@ -130,10 +136,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        data.moveToFirst();
-        adapter.swapCursor(data);
-        if (listState != null) {
-            manager.onRestoreInstanceState(listState);
+        if (data.moveToFirst()) {
+            adapter.swapCursor(data);
+            imageView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+            if (listState != null) {
+                manager.onRestoreInstanceState(listState);
+            }
+        } else {
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 
