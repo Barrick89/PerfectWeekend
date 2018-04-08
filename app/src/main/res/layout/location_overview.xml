@@ -24,12 +24,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_margin="16dp" />
 
-            <ProgressBar
-                android:id="@+id/pb_loading_indicator"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:visibility="invisible" />
-
         </RelativeLayout>
 
 </RelativeLayout>
