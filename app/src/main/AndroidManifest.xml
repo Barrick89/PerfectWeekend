@@ -78,6 +78,10 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <service
+            android:name=".widget.LocationWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 
 </manifest>
