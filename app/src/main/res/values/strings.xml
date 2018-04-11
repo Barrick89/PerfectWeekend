@@ -31,4 +31,5 @@
     <string name="mainactivity_title">PerfectWeekend</string>
     <string name="action_share">Share</string>
     <string name="no_data_available">Please tap the sun to add a favorite location.</string>
+    <string name="widget_title">My favorite places</string>
 </resources>
