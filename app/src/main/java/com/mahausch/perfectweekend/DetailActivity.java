@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
+import com.mahausch.perfectweekend.widget.WidgetUpdateService;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -214,6 +215,12 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         } else {
             Toast.makeText(this, getString(R.string.delete_location_successful),
                     Toast.LENGTH_SHORT).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(this, WidgetUpdateService.class));
+            } else {
+                startService(new Intent(this, WidgetUpdateService.class));
+            }
+            finish();
         }
     }
 
@@ -225,54 +232,55 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        data.moveToFirst();
+        if (data.moveToFirst()) {
 
-        int nameIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_NAME);
-        int imageIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_IMAGE);
-        int descriptionIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_DESCRIPTION);
-        int longitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LONGITUDE);
-        int latitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LATITUDE);
+            int nameIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_NAME);
+            int imageIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_IMAGE);
+            int descriptionIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_DESCRIPTION);
+            int longitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LONGITUDE);
+            int latitudeIndex = data.getColumnIndex(LocationEntry.COLUMN_LOCATION_LATITUDE);
 
-        String locationName = data.getString(nameIndex);
-        locationImage = data.getString(imageIndex);
-        String locationDescription = data.getString(descriptionIndex);
-        double locationLongitude = data.getDouble(longitudeIndex);
-        double locationLatitude = data.getDouble(latitudeIndex);
+            String locationName = data.getString(nameIndex);
+            locationImage = data.getString(imageIndex);
+            String locationDescription = data.getString(descriptionIndex);
+            double locationLongitude = data.getDouble(longitudeIndex);
+            double locationLatitude = data.getDouble(latitudeIndex);
 
-        locationNameTextView.setText(String.valueOf(locationName));
-        name = locationName;
-        Picasso.get()
-                .load(Uri.parse(locationImage))
-                .noFade()
-                .fit()
-                .centerCrop()
-                .into(locationImageView, new Callback() {
+            locationNameTextView.setText(String.valueOf(locationName));
+            name = locationName;
+            Picasso.get()
+                    .load(Uri.parse(locationImage))
+                    .noFade()
+                    .fit()
+                    .centerCrop()
+                    .into(locationImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            supportStartPostponedEnterTransition();
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            supportStartPostponedEnterTransition();
+                        }
+                    });
+
+            locationDescriptionTextView.setText(locationDescription);
+            longitude = locationLongitude;
+            latitude = locationLatitude;
+
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            if (map == null) {
+                ScrollableMapFragment mapFragment = (ScrollableMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(this);
+                mapFragment.setListener(new ScrollableMapFragment.OnTouchListener() {
                     @Override
-                    public void onSuccess() {
-                        supportStartPostponedEnterTransition();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        supportStartPostponedEnterTransition();
+                    public void onTouch() {
+                        scrollView.requestDisallowInterceptTouchEvent(true);
                     }
                 });
-
-        locationDescriptionTextView.setText(locationDescription);
-        longitude = locationLongitude;
-        latitude = locationLatitude;
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        if (map == null) {
-            ScrollableMapFragment mapFragment = (ScrollableMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
-            mapFragment.setListener(new ScrollableMapFragment.OnTouchListener() {
-                @Override
-                public void onTouch() {
-                    scrollView.requestDisallowInterceptTouchEvent(true);
-                }
-            });
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.widget.RemoteViews;
 
 import com.mahausch.perfectweekend.DetailActivity;
@@ -16,9 +17,16 @@ public class LocationWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(new Intent(context, WidgetUpdateService.class));
+        } else {
+            context.startService(new Intent(context, WidgetUpdateService.class));
+        }
+    }
 
+    public static void updateWidgets(Context context, AppWidgetManager appWidgetManager,
+                                     int[] appWidgetIds) {
         for (int i = 0; i < appWidgetIds.length; ++i) {
-
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.location_widget);
 
             Intent intent = new Intent(context, LocationWidgetService.class);
@@ -35,7 +43,5 @@ public class LocationWidgetProvider extends AppWidgetProvider {
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
             appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
         }
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
-
     }
 }

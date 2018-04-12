@@ -48,6 +48,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.mahausch.perfectweekend.data.LocationContract;
 import com.mahausch.perfectweekend.data.LocationContract.LocationEntry;
+import com.mahausch.perfectweekend.widget.WidgetUpdateService;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -347,6 +348,11 @@ public class EditorActivity extends AppCompatActivity implements
                 } else {
                     Toast.makeText(this, getString(R.string.editor_insert_location_successful),
                             Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(new Intent(this, WidgetUpdateService.class));
+                    } else {
+                        startService(new Intent(this, WidgetUpdateService.class));
+                    }
                 }
             } else {
                 int rowsUpdated = getContentResolver().update(currentUri, values, null, null);
@@ -357,6 +363,11 @@ public class EditorActivity extends AppCompatActivity implements
                 } else {
                     Toast.makeText(this, getString(R.string.editor_update_game_successful),
                             Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(new Intent(this, WidgetUpdateService.class));
+                    } else {
+                        startService(new Intent(this, WidgetUpdateService.class));
+                    }
                 }
             }
             finish();

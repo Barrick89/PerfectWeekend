@@ -13,8 +13,6 @@ import com.mahausch.perfectweekend.DetailActivity;
 import com.mahausch.perfectweekend.R;
 import com.mahausch.perfectweekend.data.LocationContract;
 
-import java.util.ArrayList;
-
 import static com.mahausch.perfectweekend.data.LocationContract.LocationEntry.CONTENT_URI;
 
 public class LocationWidgetService extends RemoteViewsService {
@@ -26,11 +24,9 @@ public class LocationWidgetService extends RemoteViewsService {
 
     class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-        private Context context;
-        private int mAppWidgetId;
-        private ArrayList<Long> locationId = new ArrayList<>();
-        private ArrayList<String> locationNames = new ArrayList<>();
-        private Cursor cursor;
+        Context context;
+        int mAppWidgetId;
+        Cursor cursor;
 
 
         public ListRemoteViewsFactory(Context context, Intent intent) {
@@ -41,38 +37,35 @@ public class LocationWidgetService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            cursor = getBaseContext().getContentResolver().query(CONTENT_URI, null,
-                    null, null, null);
-        }
-
-        @Override
-        public void onDataSetChanged() {
-
-            int nameIndex = cursor.getColumnIndex(LocationContract.LocationEntry.COLUMN_LOCATION_NAME);
-            int locationIndex = cursor.getColumnIndex(LocationContract.LocationEntry._ID);
-
-            if (cursor.getCount() > 0) {
-                while (cursor.moveToNext()) {
-                    locationNames.add(cursor.getString(nameIndex));
-                    locationId.add(cursor.getLong(locationIndex));
-                }
-                cursor.close();
+            initCursor();
+            if (cursor != null) {
+                cursor.moveToFirst();
             }
         }
 
         @Override
-        public void onDestroy() {
+        public void onDataSetChanged() {
+            initCursor();
+        }
 
+        private void initCursor() {
+            if (cursor != null) {
+                cursor.close();
+            }
+            cursor = context.getContentResolver().query(CONTENT_URI, null,
+                    null, null, null);
+        }
+
+        @Override
+        public void onDestroy() {
+            cursor.close();
         }
 
         @Override
         public int getCount() {
 
-            if (locationNames != null) {
-                return locationNames.size() + 1;
-            } else {
-                return 0;
-            }
+            return cursor.getCount() + 1;
+
         }
 
         @Override
@@ -85,20 +78,21 @@ public class LocationWidgetService extends RemoteViewsService {
                 rv.setViewVisibility(R.id.widget_overview_name, View.GONE);
                 rv.setTextViewText(R.id.widget_title, getString(R.string.widget_title));
             } else {
+
+                cursor.moveToPosition(i - 1);
+                int nameIndex = cursor.getColumnIndex(LocationContract.LocationEntry.COLUMN_LOCATION_NAME);
+                int locationIndex = cursor.getColumnIndex(LocationContract.LocationEntry._ID);
+
                 rv.setViewVisibility(R.id.widget_title, View.GONE);
                 rv.setViewVisibility(R.id.widget_overview_name, View.VISIBLE);
-                rv.setTextViewText(R.id.widget_overview_name, "- " + locationNames.get(i - 1));
-            }
+                rv.setTextViewText(R.id.widget_overview_name, "- " + cursor.getString(nameIndex));
 
-
-            if (i > 0) {
                 Bundle extras = new Bundle();
-                extras.putLong(DetailActivity.EXTRA_LOCATION_ID, locationId.get(i - 1));
+                extras.putLong(DetailActivity.EXTRA_LOCATION_ID, cursor.getLong(locationIndex));
                 Intent fillInIntent = new Intent();
                 fillInIntent.putExtras(extras);
                 rv.setOnClickFillInIntent(R.id.widget_overview_name, fillInIntent);
             }
-
             return rv;
         }
 
