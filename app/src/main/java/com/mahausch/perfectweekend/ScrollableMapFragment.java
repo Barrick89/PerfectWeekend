@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
-
+//Create custom map fragment to make it possible to scroll map vertically
 public class ScrollableMapFragment extends SupportMapFragment {
     private OnTouchListener mListener;
 
