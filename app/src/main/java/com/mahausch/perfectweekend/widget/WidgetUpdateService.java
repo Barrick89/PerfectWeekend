@@ -26,7 +26,7 @@ public class WidgetUpdateService extends IntentService {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, LocationWidgetProvider.class));
-        //Trigger data update to handle the GridView widgets and force a data refresh
+        //Trigger data update to handle the ListView widgets and force a data refresh
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
         //Now update all widgets
         LocationWidgetProvider.updateWidgets(this, appWidgetManager, appWidgetIds);
