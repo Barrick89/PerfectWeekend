@@ -142,6 +142,11 @@ public class EditorActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_editor);
         ButterKnife.bind(this);
 
+        /*
+         * Set OnTouchListener on every button and text input
+         * field to detect if the user made changes to know if the back button must trigger
+         * the unsavedChangesDialog
+         */
         takePhotoButton.setOnTouchListener(touchListener);
         imageFromStorageButton.setOnTouchListener(touchListener);
         nameEditText.setOnTouchListener(touchListener);
