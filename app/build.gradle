@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'PerfectWeekendKey'
+            keyAlias 'AppKey'
             keyPassword 'udacity'
-            storeFile file('PerfectWeekend/keystore.jks')
+            storeFile file('keystore.jks')
             storePassword 'udacity'
         }
     }
