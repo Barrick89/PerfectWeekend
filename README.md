@@ -34,3 +34,8 @@ allows to share the image and title with friends. The options menu allows
 to edit or delete the location:
 
 <img src="PerfectWeekend_Images/device-2018-04-15-133142.png" width="300"/><img src="PerfectWeekend_Images/device-2018-04-15-133155.png" width="300"/>
+
+The widget presents a minimalistic list of the favorite places. If the user taps
+on one of the places the DetailActivity opens:
+
+<img src="PerfectWeekend_Images/device-2018-04-15-134420.png" width="300"/>
