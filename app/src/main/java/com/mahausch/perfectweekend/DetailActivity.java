@@ -216,7 +216,8 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             Toast.makeText(this, getString(R.string.delete_location_successful),
                     Toast.LENGTH_SHORT).show();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(this, WidgetUpdateService.class));
+                WidgetUpdateService.enqueueWork(this,
+                        new Intent(this, WidgetUpdateService.class));
             } else {
                 startService(new Intent(this, WidgetUpdateService.class));
             }

@@ -18,7 +18,7 @@ public class LocationWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(new Intent(context, WidgetUpdateService.class));
+            WidgetUpdateService.enqueueWork(context, new Intent(context, WidgetUpdateService.class));
         } else {
             context.startService(new Intent(context, WidgetUpdateService.class));
         }

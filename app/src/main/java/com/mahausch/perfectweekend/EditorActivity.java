@@ -353,7 +353,8 @@ public class EditorActivity extends AppCompatActivity implements
                     Toast.makeText(this, getString(R.string.editor_insert_location_successful),
                             Toast.LENGTH_SHORT).show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(new Intent(this, WidgetUpdateService.class));
+                        WidgetUpdateService.enqueueWork(this,
+                                new Intent(this, WidgetUpdateService.class));
                     } else {
                         startService(new Intent(this, WidgetUpdateService.class));
                     }
@@ -368,7 +369,8 @@ public class EditorActivity extends AppCompatActivity implements
                     Toast.makeText(this, getString(R.string.editor_update_game_successful),
                             Toast.LENGTH_SHORT).show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(new Intent(this, WidgetUpdateService.class));
+                        WidgetUpdateService.enqueueWork(this,
+                                new Intent(this, WidgetUpdateService.class));
                     } else {
                         startService(new Intent(this, WidgetUpdateService.class));
                     }
